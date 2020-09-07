@@ -86,6 +86,16 @@ router.put('/:id', ensureAuth, async(req, res) => {
   }
 })
 
-    
+//@desc Deletar historia
+//@route DELETE /stories/:id
+router.delete('/:id', ensureAuth, async(req, res) => {
+  try {
+    await Story.remove({_id: req.params.id})
+    res.redirect('/dashboard')
+  } catch (err) {
+    console.error(err)
+    return res.render('error/500')
+  }
+})  
 
 module.exports = router
