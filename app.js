@@ -19,6 +19,10 @@ connectDB()
 
 const app = express()
 
+//analisar body
+app.use(express.urlencoded({extended: false}))
+app.use(express.json())
+
 //Logs
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
@@ -32,7 +36,7 @@ app.set('view engine', '.hbs')
 app.use(session({
     secret: 'diario2020',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new MongoStore({mongooseConnection: mongoose.connection})
 }))
 
@@ -46,6 +50,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //Routes
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
+app.use('/stories', require('./routes/stories'))
 
 
 const PORT = process.env.PORT || 3000
